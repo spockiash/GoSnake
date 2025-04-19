@@ -10,19 +10,17 @@ import (
 func main() {
 	app := tview.NewApplication()
 
-	// Create the arena with fixed dimensions
-	arena := tview.NewTextView().
-		SetText("[green]Press ↑ or ↓ to see input").
-		SetTextAlign(tview.AlignCenter).
-		SetDynamicColors(true)
-	arena.SetBorder(true)
+	statusBar := createStatusBar()
+	arena := createArena()
 
 	// Use fixed size layout instead of Flex
 	grid := tview.NewGrid().
-		SetRows(0, 40, 0).    // top padding, arena height, bottom padding
+		SetRows(1, 40, 0).    // top padding, arena height, bottom padding
 		SetColumns(0, 80, 0). // left padding, arena width, right padding
+		AddItem(statusBar, 0, 1, 1, 1, 1, 0, false).
 		AddItem(arena, 1, 1, 1, 1, 0, 0, true)
 
+	arena.SetRect(0, 0, 80, 40)
 	// Display initial size information
 	x, y, width, height := arena.GetRect()
 	arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
@@ -46,3 +44,30 @@ func main() {
 		panic(err)
 	}
 }
+
+func createArena() *tview.TextView {
+	arena := tview.NewTextView().
+		SetText("[green]Press ↑ or ↓ to see input").
+		SetTextAlign(tview.AlignCenter).
+		SetDynamicColors(true)
+	arena.SetBorder(true)
+	return arena
+}
+
+func createStatusBar() *tview.Flex {
+	score := tview.NewTextView().
+		SetText("Score: 420").
+		SetTextAlign(tview.AlignLeft)
+
+	time := tview.NewTextView().
+		SetText("4:20").
+		SetTextAlign(tview.AlignRight)
+
+	flex := tview.NewFlex().
+		AddItem(score, 0, 1, false).
+		AddItem(time, 0, 1, false)
+
+	return flex
+}
+
+func createTestScreen()
