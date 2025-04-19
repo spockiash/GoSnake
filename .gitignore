@@ -23,3 +23,9 @@ go.work.sum
 
 # env file
 .env
+
+# custom out folder
+out/
+
+# ignore debug remenants
+__debug_bin*

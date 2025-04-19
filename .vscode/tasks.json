@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"type": "shell",
+		"label": "go: build package",
+		"command": "go",
+		"args": [
+		  "build",
+		  "-o", "${workspaceFolder}/out/myapp", "${workspaceFolder}/main.go"
+		],
+		"group": "build",
+		"problemMatcher": ["$go"],
+		"detail": "Build the Go application and output to 'out/myapp'"
+	  }
+	]
+  }
+  
