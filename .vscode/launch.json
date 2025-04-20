@@ -6,7 +6,7 @@
         "type": "go",
         "request": "launch",
         "mode": "auto",  // 'auto' will choose between 'debug' or 'run' based on context
-        "program": "${workspaceFolder}/main.go",
+        "program": "${workspaceFolder}",
         "console": "externalTerminal",
         "env": {},
         "args": [],

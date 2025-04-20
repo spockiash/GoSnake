@@ -7,12 +7,14 @@
 		"command": "go",
 		"args": [
 		  "build",
-		  "-o", "${workspaceFolder}/out/myapp", "${workspaceFolder}/main.go"
+		  "-o", "${workspaceFolder}/out/myapp"
 		],
+		"options": {
+		  "cwd": "${workspaceFolder}"
+		},
 		"group": "build",
 		"problemMatcher": ["$go"],
 		"detail": "Build the Go application and output to 'out/myapp'"
 	  }
 	]
   }
-  

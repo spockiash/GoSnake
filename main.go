@@ -22,8 +22,9 @@ func main() {
 
 	arena.SetRect(0, 0, 80, 40)
 	// Display initial size information
-	x, y, width, height := arena.GetRect()
-	arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
+	//x, y, width, height := arena.GetRect()
+	arena.SetText(createTestString())
+	//arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
 
 	// Capture key events
 	arena.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
@@ -70,4 +71,17 @@ func createStatusBar() *tview.Flex {
 	return flex
 }
 
-func createTestScreen()
+func createTestString() string {
+	runes := make([]rune, ArenaWidth())
+
+	var counter int
+	for i := range runes {
+		if counter > 9 {
+			counter = 0
+		}
+		runes[i] = rune('A' + counter) // adds A, B, C, D
+		counter++
+	}
+
+	return string(runes)
+}
