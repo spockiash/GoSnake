@@ -8,6 +8,11 @@ import (
 	"github.com/rivo/tview"
 )
 
+type Coordinates struct {
+	row int
+	col int
+}
+
 func main() {
 	app := tview.NewApplication()
 
@@ -26,7 +31,7 @@ func main() {
 	//x, y, width, height := arena.GetRect()
 
 	// testing render function
-	test := createTestRender(2, 2, 'W')
+	test, _ := createTestRender(3, 3, 'W')
 
 	arena.SetText(test)
 	//arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
@@ -77,7 +82,10 @@ func createStatusBar() *tview.Flex {
 }
 
 // testing rendering of single symbol to arbitrary position
-func createTestRender(row int, col int, symbol rune) string {
+func createTestRender(row int, col int, symbol rune) (string, map[Coordinates]rune) {
+	// create map holding coordinates for optimal further write access
+	lookup := map[Coordinates]rune{}
+
 	height := ArenaHeight()
 	width := ArenaWidth()
 
@@ -91,6 +99,9 @@ func createTestRender(row int, col int, symbol rune) string {
 			// match to position
 			if h == row && w == col {
 				line[w] = symbol
+			} else {
+				line[w] = ' '
+				continue
 			}
 		}
 		lines[h] = string(line)
@@ -98,13 +109,12 @@ func createTestRender(row int, col int, symbol rune) string {
 
 	// construct output
 	var sb strings.Builder
-
-	for i := range lines {
-		sb.WriteString(lines[i])
+	for _, line := range lines {
+		sb.WriteString(line)
 		sb.WriteRune('\n')
 	}
 
-	return sb.String()
+	return sb.String(), lookup
 }
 
 func createTestString() string {
