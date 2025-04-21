@@ -1,7 +1,7 @@
 package main
 
 import (
-	"strings"
+	"github.com/rivo/tview"
 )
 
 type Arena struct {
@@ -9,6 +9,7 @@ type Arena struct {
 	renderedArena string
 	arenaHeight   int
 	arenaWidth    int
+	arenaElement  *tview.TextView
 }
 
 type Coordinates struct {
@@ -16,7 +17,7 @@ type Coordinates struct {
 	col int // width
 }
 
-// testing rendering of single symbol to arbitrary position
+// creates new arena, used when initalizing the game
 func NewArena() Arena {
 	// create map holding coordinates for optimal further write access
 	definition := map[Coordinates]rune{}
@@ -41,19 +42,23 @@ func NewArena() Arena {
 		lines[h] = string(line)
 	}
 
-	// construct output
-	var sb strings.Builder
-	for _, line := range lines {
-		sb.WriteString(line)
-		sb.WriteRune('\n')
-	}
-
 	return Arena{
 		definition,
-		sb.String(),
+		AssembleString(lines),
 		height,
 		width,
+		createArenaElement(),
 	}
+}
+
+// creates the arena tview element
+func createArenaElement() *tview.TextView {
+	arena := tview.NewTextView().
+		SetText("[green]Press ↑ or ↓ to see input").
+		SetTextAlign(tview.AlignCenter).
+		SetDynamicColors(true)
+	arena.SetBorder(true)
+	return arena
 }
 
 func arenaWidth() int {

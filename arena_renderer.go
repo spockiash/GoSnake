@@ -39,6 +39,11 @@ func RenderDefinition(definition map[Coordinates]rune) string {
 	}
 
 	// construct output
+	return AssembleString(lines)
+}
+
+// use stringbuilder to assemble rendered lines int ouptut
+func AssembleString(lines []string) string {
 	var sb strings.Builder
 	for _, line := range lines {
 		sb.WriteString(line)

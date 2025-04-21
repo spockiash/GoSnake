@@ -25,9 +25,9 @@ func main() {
 	//x, y, width, height := arena.GetRect()
 
 	// testing render function
-	test, _ := createTestRender(3, 3, 'W')
+	//test, _ := createTestRender(3, 3, 'W')
 
-	arena.SetText(test)
+	//arena.SetText(test)
 	//arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
 
 	// Capture key events
