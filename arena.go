@@ -42,19 +42,21 @@ func NewArena() Arena {
 		lines[h] = string(line)
 	}
 
+	renderedContent := AssembleString(lines)
+
 	return Arena{
 		definition,
-		AssembleString(lines),
+		renderedContent,
 		height,
 		width,
-		createArenaElement(),
+		createArenaElement(renderedContent),
 	}
 }
 
 // creates the arena tview element
-func createArenaElement() *tview.TextView {
+func createArenaElement(content string) *tview.TextView {
 	arena := tview.NewTextView().
-		SetText("[green]Press ↑ or ↓ to see input").
+		SetText(content).
 		SetTextAlign(tview.AlignCenter).
 		SetDynamicColors(true)
 	arena.SetBorder(true)
