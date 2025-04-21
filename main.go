@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -81,54 +80,57 @@ func createStatusBar() *tview.Flex {
 	return flex
 }
 
-// testing rendering of single symbol to arbitrary position
-func createTestRender(row int, col int, symbol rune) (string, map[Coordinates]rune) {
-	// create map holding coordinates for optimal further write access
-	lookup := map[Coordinates]rune{}
+// // testing rendering of single symbol to arbitrary position
+// func createTestRender(row int, col int, symbol rune) (string, map[Coordinates]rune) {
+// 	// TODO: boundary check (right now if out of bounds, the condition will simply
+// 	// not be satisfied and empty render will be created)
 
-	height := ArenaHeight()
-	width := ArenaWidth()
+// 	// create map holding coordinates for optimal further write access
+// 	lookup := map[Coordinates]rune{}
 
-	lines := make([]string, height)
+// 	height := ArenaHeight()
+// 	width := ArenaWidth()
 
-	// iterate over height (rows of lines)
-	for h := 0; h < height; h++ {
-		line := make([]rune, ArenaWidth())
-		// iterate over width (line)
-		for w := 0; w < width; w++ {
-			// match to position
-			if h == row && w == col {
-				line[w] = symbol
-			} else {
-				line[w] = ' '
-				continue
-			}
-		}
-		lines[h] = string(line)
-	}
+// 	lines := make([]string, height)
 
-	// construct output
-	var sb strings.Builder
-	for _, line := range lines {
-		sb.WriteString(line)
-		sb.WriteRune('\n')
-	}
+// 	// iterate over height (rows of lines)
+// 	for h := 0; h < height; h++ {
+// 		line := make([]rune, ArenaWidth())
+// 		// iterate over width (line)
+// 		for w := 0; w < width; w++ {
+// 			// match to position
+// 			if h == row && w == col {
+// 				line[w] = symbol
+// 			} else {
+// 				line[w] = ' '
+// 				continue
+// 			}
+// 		}
+// 		lines[h] = string(line)
+// 	}
 
-	return sb.String(), lookup
-}
+// 	// construct output
+// 	var sb strings.Builder
+// 	for _, line := range lines {
+// 		sb.WriteString(line)
+// 		sb.WriteRune('\n')
+// 	}
 
-func createTestString() string {
-	runes := make([]rune, ArenaWidth())
+// 	return sb.String(), lookup
+// }
 
-	var counter int
-	for i := range runes {
-		if counter > 9 {
-			counter = 0
-		}
-		runes[i] = rune('A' + counter) // adds A, B, C, D
+// func createTestString() string {
+// 	runes := make([]rune, ArenaWidth())
 
-		counter++
-	}
+// 	var counter int
+// 	for i := range runes {
+// 		if counter > 9 {
+// 			counter = 0
+// 		}
+// 		runes[i] = rune('A' + counter) // adds A, B, C, D
 
-	return string(runes)
-}
+// 		counter++
+// 	}
+
+// 	return string(runes)
+// }
