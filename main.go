@@ -7,11 +7,6 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Coordinates struct {
-	row int
-	col int
-}
-
 func main() {
 	app := tview.NewApplication()
 

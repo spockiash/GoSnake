@@ -11,6 +11,11 @@ type Arena struct {
 	arenaWidth    int
 }
 
+type Coordinates struct {
+	row int // height
+	col int // width
+}
+
 // testing rendering of single symbol to arbitrary position
 func NewArena() Arena {
 	// create map holding coordinates for optimal further write access
@@ -27,6 +32,11 @@ func NewArena() Arena {
 		// iterate over width (line)
 		for w := 0; w < width; w++ {
 			line[w] = ' '
+			position := Coordinates{
+				h,
+				w,
+			}
+			definition[position] = line[w]
 		}
 		lines[h] = string(line)
 	}
