@@ -17,6 +17,8 @@ type Coordinates struct {
 	col int // width
 }
 
+func AssignDefinition()
+
 // creates new arena, used when initalizing the game
 func NewArena() Arena {
 	// create map holding coordinates for optimal further write access
