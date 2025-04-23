@@ -28,6 +28,14 @@ func MoveSnake(snake *Snake, grow bool) {
 
 	// asign the body
 	snake.Body = newBody
+
+}
+
+// draws the snake onto the arena
+func DrawSnake(snake *Snake, arena *Arena) {
+	for _, v := range snake.Body {
+		arena.definition[v] = '*'
+	}
 }
 
 func ClampDirection(val int) int {

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
@@ -35,16 +33,14 @@ func main() {
 
 	//arena.SetText(test)
 	//arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
-
-	// Capture key events
 	arena.arenaElement.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-			x, y, width, height := arena.arenaElement.GetRect()
-			arena.arenaElement.SetText(fmt.Sprintf("[green]Up arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
+			//x, y, width, height := arena.arenaElement.GetRect()
+			//arena.arenaElement.SetText(fmt.Sprintf("[green]Up arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
 		case tcell.KeyDown:
-			x, y, width, height := arena.arenaElement.GetRect()
-			arena.arenaElement.SetText(fmt.Sprintf("[red]Down arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
+			//x, y, width, height := arena.arenaElement.GetRect()
+			//arena.arenaElement.SetText(fmt.Sprintf("[red]Down arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
 		case tcell.KeyEscape, tcell.KeyCtrlC:
 			app.Stop() // Exit on ESC or Ctrl+C
 		}
