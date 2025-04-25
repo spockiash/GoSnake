@@ -10,11 +10,13 @@ func main() {
 
 	statusBar := createStatusBar()
 	arena := NewArena()
+	snake := NewSnake((Height/2)-2, Width/2) // set initial position to middle of the arena, -2 is border offset
 
-	arena.definition = AddSymbol(arena.definition, Coordinates{2, 2}, 'w')
+	// draw snake onto the arena definition
+	DrawSnake(&snake, &arena)
 
+	// render the arena based on definition
 	arena.renderedArena = RenderDefinition(arena.definition)
-
 	arena.arenaElement.SetText(arena.renderedArena)
 
 	// Use fixed size layout instead of Flex
@@ -24,23 +26,12 @@ func main() {
 		AddItem(statusBar, 0, 0, 1, 1, 1, 0, false).
 		AddItem(arena.arenaElement, 1, 0, 1, 1, 0, 0, true)
 
-	//arena.SetRect(0, 0, 80, 40)
-	// Display initial size information
-	//x, y, width, height := arena.GetRect()
-
-	// testing render function
-	//test, _ := createTestRender(3, 3, 'W')
-
-	//arena.SetText(test)
-	//arena.SetText(fmt.Sprintf("Arena size: %dx%d\nPosition: %d,%d", width, height, x, y))
 	arena.arenaElement.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-			//x, y, width, height := arena.arenaElement.GetRect()
-			//arena.arenaElement.SetText(fmt.Sprintf("[green]Up arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
+
 		case tcell.KeyDown:
-			//x, y, width, height := arena.arenaElement.GetRect()
-			//arena.arenaElement.SetText(fmt.Sprintf("[red]Down arrow pressed\nArena size: %dx%d\nPosition: %d,%d", width, height, x, y))
+
 		case tcell.KeyEscape, tcell.KeyCtrlC:
 			app.Stop() // Exit on ESC or Ctrl+C
 		}

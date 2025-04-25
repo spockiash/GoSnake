@@ -5,6 +5,16 @@ type Snake struct {
 	Direction Coordinates // use coordinates as direction, {0,1} = right
 }
 
+func NewSnake(row int, col int) Snake {
+	return Snake{
+		Body: []Coordinates{
+			{row: row, col: col},
+			{row: row, col: col + 1},
+		},
+		Direction: Coordinates{row: 0, col: 0},
+	}
+}
+
 func MoveSnake(snake *Snake, grow bool) {
 	head := snake.Body[0] //start of the body slice is head
 	// extract directions
