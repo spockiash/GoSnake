@@ -85,8 +85,8 @@ func healthCheck(newHead Coordinates, arena *Arena, snake *Snake) bool {
 		return false
 	}
 	// check with itself
-	for _, v := range snake.Body {
-		if newHead == v {
+	for i := 1; i < len(snake.Body); i++ {
+		if newHead == snake.Body[i] {
 			return false
 		}
 	}

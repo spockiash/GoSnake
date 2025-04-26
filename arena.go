@@ -81,6 +81,13 @@ func ClearArena(arena *Arena) {
 	arena.definition = map[Coordinates]rune{}
 }
 
+// draws the food onto the arena
+func DrawFood(arena *Arena) {
+	for _, food := range arena.foodSource {
+		arena.definition[food.Position] = '@'
+	}
+}
+
 // creates the arena tview element
 func createArenaElement(content string) *tview.TextView {
 	arena := tview.NewTextView().

@@ -73,13 +73,14 @@ func main() {
 						return
 					}
 					// perform movement logic, this updates snake body positions
-					MoveSnake(&snake, &arena, false)
+					MoveSnake(&snake, &arena)
 
 					// clear game arena before render pass
 					ClearArena(&arena)
 
 					// adds updated snake to definition
 					DrawSnake(&snake, &arena)
+					DrawFood(&arena)
 
 					// perform the render pass
 					arena.renderedArena = RenderDefinition(arena.definition)
