@@ -58,10 +58,34 @@ func NewArena() Arena {
 				row: 30,
 			},
 		},
-		Food{
+		{
 			Coordinates{
 				col: 15,
 				row: 28,
+			},
+		},
+		{
+			Coordinates{
+				col: 45,
+				row: 21,
+			},
+		},
+		{
+			Coordinates{
+				col: 32,
+				row: 15,
+			},
+		},
+		{
+			Coordinates{
+				col: 50,
+				row: 5,
+			},
+		},
+		{
+			Coordinates{
+				col: 11,
+				row: 36,
 			},
 		},
 	}
