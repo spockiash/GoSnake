@@ -59,7 +59,7 @@ func DrawSnake(snake *Snake, arena *Arena) {
 func healthCheck(newHead Coordinates, arena *Arena, snake *Snake) bool {
 	// check collisions with the arena
 	upperBorder := 0
-	lowerBorder := arena.arenaWidth
+	lowerBorder := arena.arenaHeight
 	leftBorder := 0
 	rightBorder := arena.arenaWidth
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -13,6 +12,7 @@ func AddSymbol(definition map[Coordinates]rune,
 	return definition
 }
 
+// simple function renders the arena defitinition into a string
 func RenderDefinition(definition map[Coordinates]rune) string {
 	height := arenaHeight()
 	width := arenaWidth()
@@ -28,19 +28,11 @@ func RenderDefinition(definition map[Coordinates]rune) string {
 				h,
 				w,
 			}
-
+			// use the coma ok idiom
 			if r, ok := definition[position]; ok {
 				line[w] = r
 			} else {
-				// Here we inject the row number on second and third column
-				if w == 1 || w == 2 {
-					// convert row number to digit runes
-					digits := []rune(fmt.Sprintf("%02d", h))
-					line[1] = digits[0] // put first digit at column 1
-					line[2] = digits[1] // put second digit at column 2
-				} else {
-					line[w] = ' ' // default to space
-				}
+				line[w] = ' ' // default to space
 			}
 		}
 		lines[h] = string(line)
