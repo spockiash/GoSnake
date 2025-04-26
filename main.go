@@ -33,23 +33,23 @@ func main() {
 	arena.arenaElement.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-			if snake.Direction.row == 0 {
-				snake.Direction = Coordinates{row: -1, col: 0}
+			if snake.Direction.row != 1 {
+				snake.NextDirection = Coordinates{row: -1, col: 0}
 			}
 		case tcell.KeyDown:
-			if snake.Direction.row == 0 {
-				snake.Direction = Coordinates{row: 1, col: 0}
+			if snake.Direction.row != -1 {
+				snake.NextDirection = Coordinates{row: 1, col: 0}
 			}
 		case tcell.KeyLeft:
-			if snake.Direction.col == 0 {
-				snake.Direction = Coordinates{row: 0, col: -1}
+			if snake.Direction.col != 1 {
+				snake.NextDirection = Coordinates{row: 0, col: -1}
 			}
 		case tcell.KeyRight:
-			if snake.Direction.col == 0 {
-				snake.Direction = Coordinates{row: 0, col: 1}
+			if snake.Direction.col != -1 {
+				snake.NextDirection = Coordinates{row: 0, col: 1}
 			}
 		case tcell.KeyEscape, tcell.KeyCtrlC:
-			close(done) // signal the game loop to stop
+			close(done)
 			app.Stop()
 		}
 		return event
@@ -57,13 +57,21 @@ func main() {
 
 	// proper game loop using ticker
 	go func() {
-		ticker := time.NewTicker(500 * time.Millisecond)
+		ticker := time.NewTicker(200 * time.Millisecond)
 		defer ticker.Stop()
+		// helper variable to end the game loop
+		stopGameLoop := false
 
 		for {
 			select {
 			case <-ticker.C:
 				app.QueueUpdateDraw(func() {
+					// check for health
+					if snake.Healthy != true {
+						arena.arenaElement.SetText("[red]Game Over")
+						stopGameLoop = true
+						return
+					}
 					// perform movement logic, this updates snake body positions
 					MoveSnake(&snake, &arena, false)
 
@@ -79,6 +87,10 @@ func main() {
 				})
 			case <-done:
 				return
+			}
+			// break out of the loop
+			if stopGameLoop {
+				break
 			}
 		}
 	}()
