@@ -1,5 +1,7 @@
 package main
 
+import "slices"
+
 type Snake struct {
 	Body          []Coordinates
 	Direction     Coordinates // use coordinates as direction, {0,1} = right
@@ -39,7 +41,7 @@ func MoveSnake(snake *Snake, arena *Arena, grow bool) {
 	newBody := append([]Coordinates{newHead}, snake.Body...)
 
 	// when no grow signal delete last new body member
-	if !grow {
+	if !checkFood(newHead, arena) {
 		// select slice without last item
 		newBody = newBody[:len(newBody)-1]
 	}
@@ -47,6 +49,18 @@ func MoveSnake(snake *Snake, arena *Arena, grow bool) {
 	// asign the body
 	snake.Body = newBody
 
+}
+
+func checkFood(newHead Coordinates, arena *Arena) bool {
+	for i, v := range arena.foodSource {
+		// check if food position is equal to new head position
+		if v.Position == newHead {
+			arena.foodSource = slices.Delete(arena.foodSource, i, i+1)
+			return true // snake found food
+		}
+	}
+
+	return false // no food found
 }
 
 // draws the snake onto the arena

@@ -10,6 +10,7 @@ type Arena struct {
 	arenaHeight   int
 	arenaWidth    int
 	arenaElement  *tview.TextView
+	foodSource    []Food
 }
 
 type Coordinates struct {
@@ -44,12 +45,35 @@ func NewArena() Arena {
 
 	renderedContent := AssembleString(lines)
 
+	// hardcoded for now
+	foodSource := []Food{
+		{
+			Coordinates{
+				col: 5,
+				row: 5,
+			},
+		},
+		{
+			Coordinates{
+				col: 25,
+				row: 30,
+			},
+		},
+		{
+			Coordinates{
+				col: 15,
+				row: 28,
+			},
+		},
+	}
+
 	return Arena{
 		definition,
 		renderedContent,
 		height,
 		width,
 		createArenaElement(renderedContent),
+		foodSource,
 	}
 }
 
