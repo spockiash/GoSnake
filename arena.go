@@ -45,7 +45,6 @@ func NewArena() Arena {
 
 	renderedContent := AssembleString(lines)
 
-	// hardcoded for now
 	foodSource := []Food{
 		{
 			Coordinates{
@@ -59,7 +58,7 @@ func NewArena() Arena {
 				row: 30,
 			},
 		},
-		{
+		Food{
 			Coordinates{
 				col: 15,
 				row: 28,

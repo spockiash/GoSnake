@@ -19,7 +19,7 @@ func NewSnake(row int, col int) Snake {
 	}
 }
 
-func MoveSnake(snake *Snake, arena *Arena, grow bool) {
+func MoveSnake(snake *Snake, arena *Arena) {
 	snake.Direction = snake.NextDirection
 
 	head := snake.Body[0] //start of the body slice is head
@@ -84,8 +84,12 @@ func healthCheck(newHead Coordinates, arena *Arena, snake *Snake) bool {
 	if newHead.col == leftBorder || newHead.col == rightBorder {
 		return false
 	}
-
-	// TODO check with itself
+	// check with itself
+	for _, v := range snake.Body {
+		if newHead == v {
+			return false
+		}
+	}
 	return true
 }
 
