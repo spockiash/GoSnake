@@ -9,13 +9,12 @@ func NewSnake(row int, col int) Snake {
 	return Snake{
 		Body: []Coordinates{
 			{row: row, col: col},
-			{row: row, col: col + 1},
 		},
 		Direction: Coordinates{row: 0, col: 0},
 	}
 }
 
-func MoveSnake(snake *Snake, grow bool) {
+func MoveSnake(snake *Snake, arena *Arena, grow bool) {
 	head := snake.Body[0] //start of the body slice is head
 	// extract directions
 	v := ClampDirection(snake.Direction.row)
@@ -40,6 +39,8 @@ func MoveSnake(snake *Snake, grow bool) {
 	snake.Body = newBody
 
 }
+
+func CheckCollision()
 
 // draws the snake onto the arena
 func DrawSnake(snake *Snake, arena *Arena) {

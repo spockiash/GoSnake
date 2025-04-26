@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
@@ -12,33 +14,77 @@ func main() {
 	arena := NewArena()
 	snake := NewSnake((Height/2)-2, Width/2) // set initial position to middle of the arena, -2 is border offset
 
-	// draw snake onto the arena definition
+	// initial snake draw
 	DrawSnake(&snake, &arena)
-
-	// render the arena based on definition
 	arena.renderedArena = RenderDefinition(arena.definition)
 	arena.arenaElement.SetText(arena.renderedArena)
 
-	// Use fixed size layout instead of Flex
+	// fixed size layout
 	grid := tview.NewGrid().
-		SetRows(1, 40). // top padding, arena height, bottom padding
-		SetColumns(80). // left padding, arena width, right padding
-		AddItem(statusBar, 0, 0, 1, 1, 1, 0, false).
+		SetRows(1, Height). // status bar height and arena height
+		SetColumns(Width).
+		AddItem(statusBar, 0, 0, 1, 1, 0, 0, false).
 		AddItem(arena.arenaElement, 1, 0, 1, 1, 0, 0, true)
 
+	// channel to signal shutdown
+	done := make(chan struct{})
+
+	// input handler
 	arena.arenaElement.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-
+			if snake.Direction.row == 0 {
+				snake.Direction = Coordinates{row: -1, col: 0}
+			}
 		case tcell.KeyDown:
-
+			if snake.Direction.row == 0 {
+				snake.Direction = Coordinates{row: 1, col: 0}
+			}
+		case tcell.KeyLeft:
+			if snake.Direction.col == 0 {
+				snake.Direction = Coordinates{row: 0, col: -1}
+			}
+		case tcell.KeyRight:
+			if snake.Direction.col == 0 {
+				snake.Direction = Coordinates{row: 0, col: 1}
+			}
 		case tcell.KeyEscape, tcell.KeyCtrlC:
-			app.Stop() // Exit on ESC or Ctrl+C
+			close(done) // signal the game loop to stop
+			app.Stop()
 		}
 		return event
 	})
 
-	if err := app.SetRoot(grid, true).Run(); err != nil {
+	// proper game loop using ticker
+	go func() {
+		ticker := time.NewTicker(500 * time.Millisecond)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ticker.C:
+				app.QueueUpdateDraw(func() {
+					// perform movement logic, this updates snake body positions
+					MoveSnake(&snake, &arena, false)
+
+					// clear game arena before render pass
+					ClearArena(&arena)
+
+					// adds updated snake to definition
+					DrawSnake(&snake, &arena)
+
+					// perform the render pass
+					arena.renderedArena = RenderDefinition(arena.definition)
+					arena.arenaElement.SetText(arena.renderedArena)
+				})
+			case <-done:
+				return
+			}
+		}
+	}()
+
+	// run application
+	if err := app.SetRoot(grid, true).EnableMouse(false).Run(); err != nil {
 		panic(err)
 	}
 }
@@ -58,58 +104,3 @@ func createStatusBar() *tview.Flex {
 
 	return flex
 }
-
-// // testing rendering of single symbol to arbitrary position
-// func createTestRender(row int, col int, symbol rune) (string, map[Coordinates]rune) {
-// 	// TODO: boundary check (right now if out of bounds, the condition will simply
-// 	// not be satisfied and empty render will be created)
-
-// 	// create map holding coordinates for optimal further write access
-// 	lookup := map[Coordinates]rune{}
-
-// 	height := ArenaHeight()
-// 	width := ArenaWidth()
-
-// 	lines := make([]string, height)
-
-// 	// iterate over height (rows of lines)
-// 	for h := 0; h < height; h++ {
-// 		line := make([]rune, ArenaWidth())
-// 		// iterate over width (line)
-// 		for w := 0; w < width; w++ {
-// 			// match to position
-// 			if h == row && w == col {
-// 				line[w] = symbol
-// 			} else {
-// 				line[w] = ' '
-// 				continue
-// 			}
-// 		}
-// 		lines[h] = string(line)
-// 	}
-
-// 	// construct output
-// 	var sb strings.Builder
-// 	for _, line := range lines {
-// 		sb.WriteString(line)
-// 		sb.WriteRune('\n')
-// 	}
-
-// 	return sb.String(), lookup
-// }
-
-// func createTestString() string {
-// 	runes := make([]rune, ArenaWidth())
-
-// 	var counter int
-// 	for i := range runes {
-// 		if counter > 9 {
-// 			counter = 0
-// 		}
-// 		runes[i] = rune('A' + counter) // adds A, B, C, D
-
-// 		counter++
-// 	}
-
-// 	return string(runes)
-// }

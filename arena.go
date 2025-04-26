@@ -53,6 +53,11 @@ func NewArena() Arena {
 	}
 }
 
+// clears the arena definition (used before render cycles)
+func ClearArena(arena *Arena) {
+	arena.definition = map[Coordinates]rune{}
+}
+
 // creates the arena tview element
 func createArenaElement(content string) *tview.TextView {
 	arena := tview.NewTextView().
