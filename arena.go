@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math/rand"
+
 	"github.com/rivo/tview"
 )
 
@@ -45,50 +47,7 @@ func NewArena() Arena {
 
 	renderedContent := AssembleString(lines)
 
-	foodSource := []Food{
-		{
-			Coordinates{
-				col: 5,
-				row: 5,
-			},
-		},
-		{
-			Coordinates{
-				col: 25,
-				row: 30,
-			},
-		},
-		{
-			Coordinates{
-				col: 15,
-				row: 28,
-			},
-		},
-		{
-			Coordinates{
-				col: 45,
-				row: 21,
-			},
-		},
-		{
-			Coordinates{
-				col: 32,
-				row: 15,
-			},
-		},
-		{
-			Coordinates{
-				col: 50,
-				row: 5,
-			},
-		},
-		{
-			Coordinates{
-				col: 11,
-				row: 36,
-			},
-		},
-	}
+	foodSource := generateFood()
 
 	return Arena{
 		definition,
@@ -110,6 +69,23 @@ func DrawFood(arena *Arena) {
 	for _, food := range arena.foodSource {
 		arena.definition[food.Position] = '@'
 	}
+}
+
+func generateFood() []Food {
+	amount := (Height * Height) / 12
+	food := []Food{}
+	for i := 0; i < amount; i++ {
+		col := rand.Intn(arenaWidth()) + 1
+		row := rand.Intn(arenaHeight()) + 1
+		food = append(food, Food{
+			Position: Coordinates{
+				row: row,
+				col: col,
+			},
+		})
+	}
+
+	return food
 }
 
 // creates the arena tview element
